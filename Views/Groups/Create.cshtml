@@ -1,0 +1,48 @@
+﻿@model UserManagement.Models.Groups
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Groups</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewBag.NoPermissions)
+        {
+            <div class="alert alert-warning" role="alert">
+                There are no Permissions available. Please <a href="/Permissions/Create">create a permission</a> before continuing.
+            </div>
+        }
+        else
+        {
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="GroupName" class="control-label"></label>
+                    <input asp-for="GroupName" class="form-control" />
+                    <span asp-validation-for="GroupName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="selectedPermissions">Select Permissions:</label>
+                    <select id="selectedPermissions" name="selectedPermissions" asp-items="@ViewBag.PermissionList" class="form-control" multiple></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

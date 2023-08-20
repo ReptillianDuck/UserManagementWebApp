@@ -1,0 +1,17 @@
+﻿@model List<UserManagement.Models.Groups>
+
+@{
+    ViewData["Title"] = "List of Groups";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Click on a group to show the users in that group</h4>
+<ul>
+    @foreach (var group in Model)
+    {
+        <li>
+            <a href="@Url.Action("UsersByGroup", "UserGroups", new { groupId = group.GroupId })">@group.GroupName</a>
+        </li>
+    }
+</ul>

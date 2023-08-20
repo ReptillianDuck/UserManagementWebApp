@@ -1,0 +1,25 @@
+﻿@model List<UserManagement.Models.Users>
+
+@{
+    ViewData["Title"] = "Users in Group: " + ViewData["GroupName"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

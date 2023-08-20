@@ -1,0 +1,85 @@
+﻿@model UserManagement.Models.Users
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Users</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewBag.NoGroups)
+        {
+            <div class="alert alert-warning" role="alert">
+                There are no groups available. Please <a href="/Groups/Create">create a group</a> before continuing.
+            </div>
+        }
+        else
+        {
+            <div>
+                <p>No of users in the database: @ViewBag.UserCount</p>
+            </div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="selectedGroups">Select Groups:</label>
+                    <select id="selectedGroups" name="selectedGroups" asp-items="@ViewBag.GroupList" class="form-control" multiple></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+@* <h4>Users per Group</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UsersPerGroup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" name="groupId" id="groupIdInput" />
+            <div class="list-group">
+                <label for="selectGroups">Select Groups:</label>
+                <select id="selectGroups" name="selectGroups" asp-items="@ViewBag.GroupList" class="form-control" multiple>
+                    <!--option value="">Please select a group</!--option-->
+                </select>
+            </div>
+            <div class="list-group">
+                <input type="submit" value="Show_Users" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div> *@
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* <script>
+        document.getElementById('selectGroups').addEventListener('change', function () {
+            var selectedGroupId = this.value;
+            document.getElementById('groupIdInput').value = selectedGroupId;
+        });
+    </script> *@
+    @* <script>
+        // Enable the button when a group is chosen
+        document.getElementById('selectGroups').addEventListener('change', function () {
+            const showUsersButton = document.getElementById('showUsersButton');
+            showUsersButton.disabled = this.value === '';
+        });
+    </script> *@
+                    }

@@ -1,0 +1,25 @@
+﻿@model List<UserManagement.DTOs.GroupWithUserCount>
+
+@{
+    ViewData["Title"] = "User Count per Group";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Group Name</th>
+            <th>Number of Users</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var group in Model)
+        {
+            <tr>
+                <td>@group.GroupName</td>
+                <td>@group.UserCount</td>
+            </tr>
+        }
+    </tbody>
+</table>
