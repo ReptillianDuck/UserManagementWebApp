@@ -57,7 +57,7 @@ namespace UserManagement.Controllers
 
             ViewBag.NoGroups = false;
 
-            int userCount = _context.Users.Count(); // Assuming your Users DbSet is named "Users"
+            int userCount = _context.Users.Count(); 
             ViewBag.UserCount = userCount;
 
             ViewBag.GroupList = new SelectList(_context.Groups, "GroupId", "GroupName");
@@ -95,7 +95,6 @@ namespace UserManagement.Controllers
                 {
                     foreach (var error in modelState.Errors)
                     {
-                        // Log or debug the validation error messages
                         Console.WriteLine(error.ErrorMessage);
                     }
                 }
@@ -123,7 +122,7 @@ namespace UserManagement.Controllers
             }
             if (user.UserGroups == null)
             {
-                user.UserGroups = new List<UserGroup>(); // Initialize the UserGroups collection if null
+                user.UserGroups = new List<UserGroup>(); 
             }
 
             var selectedGroupIds = user.UserGroups.Select(ug => ug.GroupId).ToList();
@@ -133,20 +132,6 @@ namespace UserManagement.Controllers
 
             return View(user);
         }
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Users == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var users = await _context.Users.FindAsync(id);
-        //    if (users == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(users);
-        //}
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -203,38 +188,6 @@ namespace UserManagement.Controllers
             return View(updatedUser);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Users users)
-        //{
-        //    if (id != users.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(users);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UsersExists(users.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(users);
-        //}
-
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -262,9 +215,16 @@ namespace UserManagement.Controllers
             {
                 return Problem("Entity set 'UserManagementContext.Users'  is null.");
             }
-            var users = await _context.Users.FindAsync(id);
+            var users = await _context.Users
+                .Include(u => u.UserGroups) 
+                .FirstOrDefaultAsync(u => u.Id == id);
+
             if (users != null)
             {
+                foreach (var userGroup in users.UserGroups.ToList())
+                {
+                    _context.UserGroups.Remove(userGroup);
+                }
                 _context.Users.Remove(users);
             }
 
